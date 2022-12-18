@@ -9,6 +9,7 @@ public class Main {
         tabuleiro[0][2] = teste;
         tabuleiro[2][0] = teste;
         mostrarTabuleiro(tabuleiro);
+        //asdasd
     }
 
     public static void mostrarTabuleiro(String[][] tabuleiro){
