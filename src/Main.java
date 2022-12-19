@@ -5,13 +5,17 @@ public class Main {
     static String bolinha = "\u26AA";
     static String xis = "\u2716";
     public static void main(String[] args) {
-
         String[][] tabuleiro = new String[3][3];
-        tabuleiro[1][2] = xis;
-        tabuleiro[2][2] = bolinha;
-        tabuleiro[1][1] = bolinha;
-        mostrarTabuleiro(tabuleiro);
-        //asdasd
+        String posicao = "";
+
+        while(posicao != "-1"){
+            System.out.println("Escreva a posição que quer marcar: \n( Usar formato: linha,coluna )");
+            posicao = scanner.nextLine();
+
+            marcarNoTabuleiro(tabuleiro,posicao,"x");
+            mostrarTabuleiro(tabuleiro);
+        }
+        System.out.println("jogo acabou");
     }
 
     public static void mostrarTabuleiro(String[][] tabuleiro){
@@ -29,9 +33,10 @@ public class Main {
             }
             System.out.println();
             if(linha != tabuleiro.length-1) {
-                System.out.println("_____________________________________________");
+                System.out.println("---------------------------------------------");
             }
         }
+        System.out.println();
     }
 
     public static void marcarNoTabuleiro(String[][] tabuleiro, String posicao, String marcacao){
@@ -44,15 +49,16 @@ public class Main {
                 tabuleiro[posicoes[0]][posicoes[1]] = bolinha;
             }
         }
+
     }
 
     private static boolean ValidarPosicao(String[][] tabuleiro, String posicao) {
         int[] posicoesDigitadas = receberPosicoesStringToInt(posicao);
-        if(posicoesDigitadas[0] > tabuleiro.length){
+        if(posicoesDigitadas[0] > tabuleiro.length-1){
             System.out.println("A linha digitada é maior do que a quantidade de linhas possíveis");
             return false;
         }
-        if(posicoesDigitadas[1] > tabuleiro[posicoesDigitadas[1]].length){
+        if(posicoesDigitadas[1] > tabuleiro[posicoesDigitadas[0]].length-1){
             System.out.println("A coluna digitada é maior do que a quantidade de colunas possíveis");
             return false;
         }
@@ -65,7 +71,7 @@ public class Main {
 
     private static int[] receberPosicoesStringToInt(String posicao) {
         String[] posicoes = posicao.split(",");
-        int[] numerosPosicoes = {Integer.parseInt(posicoes[0]), Integer.parseInt(posicoes[1])};
+        int[] numerosPosicoes = {Integer.parseInt(posicoes[0])-1, Integer.parseInt(posicoes[1])-1};
         return numerosPosicoes;
     }
 
