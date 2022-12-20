@@ -1,3 +1,4 @@
+import Models.EtapaTabuleiro;
 import Models.Jogador;
 import Models.Tabuleiro;
 
@@ -9,52 +10,39 @@ public class Main {
     public static void main(String[] args) {
         Tabuleiro tabuleiro = new Tabuleiro();
         tabuleiro.tabuleiro = new String[3][3];
+        tabuleiro.etapaTabuleiro = EtapaTabuleiro.JogoComecando;
+        tabuleiro.jogadores = Jogador.criarJogadoresParaOJogoDaVelha();
+        Jogador jogadorDaVez = new Jogador();
         String posicao = "";
-        Jogador jogador = new Jogador("teste", "x");
-        while(posicao != "-1"){
-            System.out.println("Escreva a posição que quer marcar: \n( Usar formato: linha,coluna )");
+        String opcaoMenu = "";
+        System.out.println("O Jogo vai começar!");
+
+        while(!opcaoMenu.equals("5")){
+            for(int i = 0; i < tabuleiro.jogadores.length; i++){
+                if(tabuleiro.jogadores[i].jogadorDaVez){
+                    System.out.printf("Digite sua jogada, %s. (Você marca com %s)\n", tabuleiro.jogadores[i].nome,tabuleiro.jogadores[i].marcacao);
+                    System.out.printf("Digite no formato (linha,coluna) de 1 a %d.\n", tabuleiro.tabuleiro.length);
+                    jogadorDaVez = tabuleiro.jogadores[i];
+                }
+            }
             posicao = scanner.nextLine();
 
-            marcarNoTabuleiro(tabuleiro,posicao,jogador);
+            tabuleiro.marcarNoTabuleiro(posicao,jogadorDaVez);
+
+
+            if(tabuleiro.etapaTabuleiro == EtapaTabuleiro.JogoConcluido){
+                System.out.println();
+                System.out.println("1 - Continuar Jogando");
+                System.out.println("5 - Sair");
+                opcaoMenu = scanner.nextLine();
+                if(opcaoMenu.equals("1")){
+                    tabuleiro.etapaTabuleiro = EtapaTabuleiro.JogoEmAndamento;
+                    Jogador.trocarMarcacaoJogadores(tabuleiro.jogadores);
+                }
+            }
         }
-        System.out.println("jogo acabou");
+        System.out.println("O jogo acabou!");
     }
-
-    public static void marcarNoTabuleiro(Tabuleiro tabuleiro, String posicao, Jogador jogador){
-        boolean isPosicaoValida = ValidarPosicao(tabuleiro,posicao);
-        if(isPosicaoValida){
-            int[] posicoes = receberPosicoesStringToInt(posicao);
-            tabuleiro.tabuleiro[posicoes[0]][posicoes[1]] = jogador.marcacao;
-            tabuleiro.verificarJogadaGanhadora(posicoes,jogador);
-            tabuleiro.mostrarTabuleiro();
-        }
-
-    }
-
-    private static boolean ValidarPosicao(Tabuleiro tabuleiro, String posicao) {
-        int[] posicoesDigitadas = receberPosicoesStringToInt(posicao);
-        if(posicoesDigitadas[0] > tabuleiro.tabuleiro.length-1){
-            System.out.println("A linha digitada é maior do que a quantidade de linhas possíveis");
-            return false;
-        }
-        if(posicoesDigitadas[1] > tabuleiro.tabuleiro[posicoesDigitadas[0]].length-1){
-            System.out.println("A coluna digitada é maior do que a quantidade de colunas possíveis");
-            return false;
-        }
-        if(tabuleiro.tabuleiro[posicoesDigitadas[0]][posicoesDigitadas[1]] != null) {
-            System.out.println("A posição digitada já possui um valor: " + tabuleiro.tabuleiro[posicoesDigitadas[0]][posicoesDigitadas[1]]);
-            return false;
-        }
-        return true;
-    }
-
-    private static int[] receberPosicoesStringToInt(String posicao) {
-        String[] posicoes = posicao.split(",");
-        int[] numerosPosicoes = {Integer.parseInt(posicoes[0])-1, Integer.parseInt(posicoes[1])-1};
-        return numerosPosicoes;
-    }
-
-
 
 
 }
