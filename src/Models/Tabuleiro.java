@@ -45,11 +45,11 @@ public class Tabuleiro {
     }
     private boolean validarPosicao(String posicao) {
         int[] posicoesDigitadas = receberPosicoesStringToInt(posicao);
-        if(posicoesDigitadas[0] > this.tabuleiro.length-1){
+        if(posicoesDigitadas[0] > this.tabuleiro.length-1|| posicoesDigitadas[0] < 0){
             System.out.println("A linha digitada é maior do que a quantidade de linhas possíveis");
             return false;
         }
-        if(posicoesDigitadas[1] > this.tabuleiro[posicoesDigitadas[0]].length-1){
+        if(posicoesDigitadas[1] > this.tabuleiro[posicoesDigitadas[0]].length-1 || posicoesDigitadas[1] < 0){
             System.out.println("A coluna digitada é maior do que a quantidade de colunas possíveis");
             return false;
         }
@@ -173,5 +173,6 @@ public class Tabuleiro {
         String[] posicoes = posicao.split(",");
         int[] numerosPosicoes = {Integer.parseInt(posicoes[0])-1, Integer.parseInt(posicoes[1])-1};
         return numerosPosicoes;
+
     }
 }
